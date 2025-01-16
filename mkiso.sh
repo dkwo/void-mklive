@@ -91,14 +91,26 @@ build_variant() {
     # thus everyone should just do a chroot install anyways
     WANT_INSTALLER=no
     case "$ARCH" in
-        x86_64*|i686*) GRUB_PKGS="grub-i386-efi grub-x86_64-efi"; WANT_INSTALLER=yes ;;
-        aarch64*) GRUB_PKGS="grub-arm64-efi" ;;
-        asahi*) GRUB_PKGS="asahi-base asahi-scripts grub-arm64-efi"; KERNEL_PKG="linux-asahi"; ARCH="aarch64${ARCH#asahi}" ;;
+        x86_64*|i686*)
+            GRUB_PKGS="grub-i386-efi grub-x86_64-efi"
+            GFX_PKGS="xorg-video-drivers"
+            WANT_INSTALLER=yes
+            ;;
+        aarch64*)
+            GRUB_PKGS="grub-arm64-efi"
+            GFX_PKGS="xorg-video-drivers"
+            ;;
+        asahi*)
+            GRUB_PKGS="asahi-base asahi-scripts grub-arm64-efi"
+            GFX_PKGS="mesa-asahi-dri"
+            KERNEL_PKG="linux-asahi"
+            ARCH="aarch64${ARCH#asahi}"
+            ;;
     esac
 
     A11Y_PKGS="espeakup void-live-audio brltty"
     PKGS="dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
-    XORG_PKGS="xorg-minimal xorg-input-drivers xorg-video-drivers setxkbmap xauth font-misc-misc terminus-font dejavu-fonts-ttf orca"
+    XORG_PKGS="xorg-minimal xorg-input-drivers $GFX_PKGS setxkbmap xauth font-misc-misc terminus-font dejavu-fonts-ttf orca"
     SERVICES="sshd chronyd"
 
     LIGHTDM_SESSION=''

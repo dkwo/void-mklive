@@ -110,7 +110,7 @@ build_variant() {
 
     A11Y_PKGS="espeakup void-live-audio brltty"
     PKGS="dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
-    XORG_PKGS="xorg-minimal xorg-input-drivers $GFX_PKGS setxkbmap xauth font-misc-misc terminus-font dejavu-fonts-ttf orca"
+    XORG_PKGS="$GFX_PKGS xorg-minimal xorg-input-drivers setxkbmap xauth font-misc-misc terminus-font dejavu-fonts-ttf orca"
     SERVICES="sshd chronyd"
 
     LIGHTDM_SESSION=''

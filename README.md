@@ -99,7 +99,7 @@ Wrapper script around mklive.sh for several standard flavors of live images.
 Adds void-installer and other helpful utilities to the generated images.
 
 OPTIONS
- -a <arch>     Set XBPS_ARCH in the image
+ -a <arch>     Set architecture (or platform) in the image
  -b <variant>  One of base, enlightenment, xfce, mate, cinnamon, gnome, kde,
                lxde, or lxqt (default: base). May be specified multiple times
                to build multiple variants

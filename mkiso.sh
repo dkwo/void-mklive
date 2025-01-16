@@ -19,7 +19,7 @@ usage() {
 	Adds void-installer and other helpful utilities to the generated images.
 
 	OPTIONS
-	 -a <arch>     Set XBPS_ARCH in the image
+	 -a <arch>     Set architecture (or platform) in the image
 	 -b <variant>  One of base, enlightenment, xfce, mate, cinnamon, gnome, kde,
 	               lxde, or lxqt (default: base). May be specified multiple times
 	               to build multiple variants
@@ -71,10 +71,10 @@ include_installer() {
 
 setup_pipewire() {
     PKGS="$PKGS pipewire alsa-pipewire"
-    case "$KERNEL_PKG" in
-        linux-asahi)
-	    PKGS="$PKGS asahi-audio"
-	    ;;
+    case "$TARGET_ARCH" in
+        aarch64*)
+            PKGS="$PKGS asahi-audio"
+            ;;
     esac
     mkdir -p "$INCLUDEDIR"/etc/xdg/autostart
     ln -sf /usr/share/applications/pipewire.desktop "$INCLUDEDIR"/etc/xdg/autostart/
@@ -100,16 +100,18 @@ build_variant() {
             GRUB_PKGS="grub-i386-efi grub-x86_64-efi"
             GFX_PKGS="xorg-video-drivers"
             WANT_INSTALLER=yes
+            TARGET_ARCH="$ARCH"
             ;;
         aarch64*)
             GRUB_PKGS="grub-arm64-efi"
             GFX_PKGS="xorg-video-drivers"
+            TARGET_ARCH="$ARCH"
             ;;
         asahi*)
             GRUB_PKGS="asahi-base asahi-scripts grub-arm64-efi"
             GFX_PKGS="mesa-asahi-dri"
             KERNEL_PKG="linux-asahi"
-            ARCH="aarch64${ARCH#asahi}"
+            TARGET_ARCH="aarch64${ARCH#asahi}"
             ;;
     esac
 
@@ -189,7 +191,7 @@ EOF
         setup_pipewire
     fi
 
-    ./mklive.sh -a "$ARCH" -o "$IMG" -p "$PKGS" -S "$SERVICES" -I "$INCLUDEDIR" \
+    ./mklive.sh -a "$TARGET_ARCH" -o "$IMG" -p "$PKGS" -S "$SERVICES" -I "$INCLUDEDIR" \
         ${KERNEL_PKG:+-v $KERNEL_PKG} ${REPO} "$@"
 
 	cleanup

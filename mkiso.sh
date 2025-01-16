@@ -71,6 +71,11 @@ include_installer() {
 
 setup_pipewire() {
     PKGS="$PKGS pipewire alsa-pipewire"
+    case "$KERNEL_PKG" in
+        linux-asahi)
+	    PKGS="$PKGS asahi-audio"
+	    ;;
+    esac
     mkdir -p "$INCLUDEDIR"/etc/xdg/autostart
     ln -sf /usr/share/applications/pipewire.desktop "$INCLUDEDIR"/etc/xdg/autostart/
     mkdir -p "$INCLUDEDIR"/etc/pipewire/pipewire.conf.d

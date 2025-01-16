@@ -93,6 +93,7 @@ build_variant() {
     case "$ARCH" in
         x86_64*|i686*) GRUB_PKGS="grub-i386-efi grub-x86_64-efi"; WANT_INSTALLER=yes ;;
         aarch64*) GRUB_PKGS="grub-arm64-efi" ;;
+        asahi*) GRUB_PKGS="asahi-base asahi-scripts grub-arm64-efi"; KERNEL_PKG="linux-asahi"; ARCH="aarch64${ARCH#asahi}" ;;
     esac
 
     A11Y_PKGS="espeakup void-live-audio brltty"
@@ -171,7 +172,8 @@ EOF
         setup_pipewire
     fi
 
-    ./mklive.sh -a "$ARCH" -o "$IMG" -p "$PKGS" -S "$SERVICES" -I "$INCLUDEDIR" ${REPO} "$@"
+    ./mklive.sh -a "$ARCH" -o "$IMG" -p "$PKGS" -S "$SERVICES" -I "$INCLUDEDIR" \
+        ${KERNEL_PKG:+-v $KERNEL_PKG} ${REPO} "$@"
 
 	cleanup
 }

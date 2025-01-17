@@ -71,9 +71,10 @@ include_installer() {
 
 setup_pipewire() {
     PKGS="$PKGS pipewire alsa-pipewire"
-    case "$TARGET_ARCH" in
-        aarch64*)
+    case "$ARCH" in
+        asahi*)
             PKGS="$PKGS asahi-audio"
+            SERVICES="$SERVICES speakersafetyd"
             ;;
     esac
     mkdir -p "$INCLUDEDIR"/etc/xdg/autostart
